@@ -28,13 +28,13 @@ def input_error(func):
         return output 
     return inner
 
-def hello(*_) -> str:
+def hello(*args, **kwargs) -> str:
     '''Return bots greeting'''
     output = 'How can I help you?'
     return output
 
 @input_error
-def adding(name: str, number: str, arg, date: str, *_) -> str:
+def adding(name: str, number: str, date: str, *args, **kwargs) -> str:
     '''If contact is existing add phone to it, else create contact'''
     record = address_book.data.get(name)
     phone = Phone(number)
@@ -52,24 +52,24 @@ def adding(name: str, number: str, arg, date: str, *_) -> str:
     return output
 
 @input_error
-def changing(name: str, new_number: str, old_number: str, *_) -> str:
+def changing(name: str, number: str, old_number: str, *args, **kwargs) -> str:
     '''Change contact in the dictionary'''
     record = address_book.data[name]
-    new_phone = Phone(new_number)
+    new_phone = Phone(number)
     old_phone = Phone(old_number)
     record.change(old_phone, new_phone)
-    output = f'Contact {name} is changed from {old_number} to {new_number}'
+    output = f'Contact {name} is changed from {old_number} to {number}'
     return output
 
 @input_error
-def get_phones(name: str, *_) -> str:
+def get_phones(name: str, *args, **kwargs) -> str:
     '''Return numbers received contact'''
     record = address_book.data[name]
-    numbers = record.get_numbers()
+    numbers = ', '.join(record.get_numbers())
     return numbers
 
 @input_error
-def remove_phone(name: str, number: str, *_) -> str:
+def remove_phone(name: str, number: str, *args, **kwargs) -> str:
     '''Remove phone from contact phone numbers'''
     record = address_book.data[name]
     phone = Phone(number)
@@ -78,7 +78,7 @@ def remove_phone(name: str, number: str, *_) -> str:
     return output
 
 @input_error
-def days_to_birth(name: str, *_) -> str:
+def days_to_birth(name: str, *args, **kwargs) -> str:
     '''Remove phone from contact phone numbers'''
     record = address_book.data[name]
     days = record.days_to_birthday()
@@ -86,22 +86,22 @@ def days_to_birth(name: str, *_) -> str:
     return output
 
 @input_error
-def remove_contact(name: str, *_) -> str:
+def remove_contact(name: str, *args, **kwargs) -> str:
     '''Remove contact from address book'''
     address_book.data.pop(name)
     output = f'Contact {name} is deleted'
     return output
 
-def show_all(*_) -> str:
+def show_all(*args, **kwargs) -> str:
     '''Return message with all contacts'''
     return address_book.show_records()
 
 @input_error
-def show_part(*_) -> str:
+def show_part(*args, **kwargs) -> str:
     '''Return message with n contacts'''
     return next(iterator)
 
-def find_rec(symbols, *args):
+def find_rec(symbols, *args, **kwargs):
     return address_book.find_records(symbols)
 
 def good_bye(*args, **kwargs) -> str:

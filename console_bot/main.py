@@ -27,6 +27,7 @@ def parser(message: str) -> tuple[str|None, str|None, str|None]:
     new_number: didgits at the end of the message after space
     old_namber: didgits before new number after space
     name: all symbols between command and number
+    symbols: symbols after command find,
     '''
     def clean_message(message:str, text_match:re.Match) -> tuple[str, str]:
         text = ''
@@ -49,6 +50,9 @@ def parser(message: str) -> tuple[str|None, str|None, str|None]:
         return date_match
     
     message = message.lstrip()
+    symbols_match = re.search(r'(?<=find )(\w+)\b', message, re.IGNORECASE)
+    message, symbols = clean_message(message, symbols_match)
+
     command_match = re.search(fr'^({COMMAND_WORDS})\b', message, re.IGNORECASE)
     message, command = clean_message(message, command_match)
 
@@ -62,20 +66,25 @@ def parser(message: str) -> tuple[str|None, str|None, str|None]:
     message, old_number = clean_message(message, old_number_match)
 
     name = message.strip()
-    return command, name, new_number, old_number, date 
+    return command, name, new_number, old_number, date, symbols
 
 
 def main():
     address_book = handlers.address_book
     while True:
         inp = input('Write your command: ')
-        command, name, new_number, old_number, date  = parser(inp)
+        command, name, new_number, old_number, date, symbols  = parser(inp)
         try:
             hendler = OPERATIONS[command]
         except KeyError:
             print('There are no command')
             continue
-        output = hendler(name, new_number, old_number, date)
+        output = hendler(
+            name=name, 
+            number=new_number, 
+            old_number=old_number, 
+            date=date, 
+            symbols=symbols)
         print(output)
         if output == 'Good bye':
             break
