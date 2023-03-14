@@ -167,7 +167,11 @@ class AdressBook(UserDict):
     
     def find_records(self, symbols: str) -> str:
         '''Find all records with such symbols'''
-        output = '\n'.join(str(record) for record in self.data.values() if symbols in record.name.value.lower() or symbols in ' '.join(record.get_numbers()))
+        output = '\n'.join(
+            str(record) for record in self.data.values() 
+            if symbols in record.name.value.lower() 
+            or symbols in ' '.join(record.get_numbers())
+            )
         return output
     
     def __iter__(self):

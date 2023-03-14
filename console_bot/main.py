@@ -50,6 +50,7 @@ def parser(message: str) -> tuple[str|None, str|None, str|None]:
         return date_match
     
     message = message.lstrip()
+    
     symbols_match = re.search(r'(?<=find )(\w+)\b', message, re.IGNORECASE)
     message, symbols = clean_message(message, symbols_match)
 
